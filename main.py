@@ -11,6 +11,7 @@ from typing import Dict
 from aiogram.types import BotCommand
 from aiogram.methods.set_my_commands import SetMyCommands
 from aiogram_dialog import setup_dialogs
+from dotenv import load_dotenv
 
 dp = Dispatcher()
 
@@ -22,14 +23,16 @@ async def on_shutdown(db: Dict[int, UserData]):
         if session is not None and not session.closed:
             await session.close()
 
+load_dotenv()
+
 API_TOKEN = os.getenv("BOT_TOKEN")
 db = {}
 
 commands = [
     BotCommand(command="auth", description="Авторизоваться через ЛКС МИРЭА"),
-    BotCommand(command="code", description="Начать решать задачи")
+    BotCommand(command="code", description="Начать решать задачи"),
+    BotCommand(command="quit", description="Выйти из ЛКС МИРЭА")
 ]
-
 
 
 async def main():

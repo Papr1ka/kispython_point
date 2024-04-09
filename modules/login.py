@@ -4,17 +4,16 @@ from aiohttp import ClientConnectionError
 from enum import Enum
 from typing import Tuple, Dict
 
-
 AUTH_URL = "https://kispython.ru/login/lks"
 
 
 class AuthStatus(Enum):
     SERVER_UNAVAILABLE = 0, "Сервер недоступен, попробуйте позже"
     INVALID_AUTH_DATA = 1, "Неверные данные для авторизации"
-    TOO_MANY_ATTEMPS = 2, "Слишком много неудачных попыток"
+    TOO_MANY_ATTEMPTS = 2, "Слишком много неудачных попыток"
     SUCCESS = 3, "Успешно"
     UNDEFINED_ERROR = 4, "Ошибка"
-    
+
     def get_message(self):
         return self.value[1]
 
@@ -48,6 +47,7 @@ async def prepare_session_for_login(session: ClientSession) -> AuthStatus:
     except ClientConnectionError as E:
         return AuthStatus.SERVER_UNAVAILABLE, None
 
+
 async def login_via_lks(session: ClientSession, login: str, password: str, data: Dict[str, str]) -> AuthStatus:
     """Авторизует пользователя с парой login, password, все токены записываются в session
 
@@ -75,7 +75,7 @@ async def login_via_lks(session: ClientSession, login: str, password: str, data:
             if login_form is not None and login_form.text.startswith("Указан неверный логин/пароль"):
                 return AuthStatus.INVALID_AUTH_DATA
             elif login_form is not None and login_form.text.startswith("Превышено количество неудачных попыток входа"):
-                return AuthStatus.TOO_MANY_ATTEMPS
+                return AuthStatus.TOO_MANY_ATTEMPTS
             elif login_form is not None:
                 return AuthStatus.UNDEFINED_ERROR
             return AuthStatus.SUCCESS
