@@ -11,7 +11,7 @@ class AuthMiddleware(BaseMiddleware):
             message: Message,
             data: Dict[str, Any]
     ) -> Any:
-        db: Dict[str, UserData] = data.get("db")
+        db: Dict[int, UserData] = data.get("db")
         assert db is not None, "Забыли передать db в bot.start_pooling в main"
         user_id = message.from_user.id
         user_data = db.get(user_id)
