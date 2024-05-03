@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command, or_f
 from aiogram.fsm.context import FSMContext
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 from aiogram.fsm.state import State, StatesGroup
 import operator
 from aiogram_dialog.widgets.text import Jinja
@@ -13,7 +13,7 @@ from typing import Dict, Any
 from aiogram.filters.state import State, StatesGroup
 
 from aiogram_dialog import Window, Dialog, DialogManager, StartMode
-from aiogram_dialog.widgets.kbd import Button, ScrollingGroup
+from aiogram_dialog.widgets.kbd import Button, ScrollingGroup, Back
 from aiogram_dialog.widgets.text import Const, List, Format
 
 from aiogram_dialog.widgets.kbd import Select, Column
@@ -52,14 +52,27 @@ async def get_task_condition(manager: DialogManager):  # TODO: сделать у
 
     parse = BeautifulSoup(content.text, "html.parser")
     tag = parse.find(name="h2", id=f"вариант-{data['variant']}")
+    next_variant = f"вариант-{int(data['variant']) + 1}"
     html = str(tag)
-    for i in range(5):
-        tag = tag.find_next_sibling()
-        html += str(tag)
+    
+    def skip_br(tag):
+        # Пропускает NavigableString "\n"
+        if isinstance(tag, NavigableString):
+            return tag.next_sibling
+        return tag
+    
+    next_sibling = skip_br(tag.next_sibling)
+    
+    while next_sibling is not None and next_sibling.attrs.get('id') != next_variant:
+        html += str(next_sibling)
+        next_sibling = skip_br(next_sibling.next_sibling)
+
     manager.dialog_data["condition"] = html
+    
+    with open("out.html", "w") as file:
+        file.write(html)
 
     print(manager.dialog_data["condition"])
-
 
 async def on_group_selected(callback: CallbackQuery, widget: Any,
                             manager: DialogManager, item_id: str):
@@ -117,6 +130,7 @@ task = Window(
         width=3,
         height=4
     ),
+    Back(text=Const("Назад")),
     state=CodeStates.task
 )
 
@@ -136,10 +150,12 @@ variant = Window(
         width=5,
         height=8
     ),
+    Back(text=Const("Назад")),
     state=CodeStates.variant
 )
 task_display = Window(
     Format("{dialog_data[condition]}"),
+    Back(text=Const("Назад")),
     parse_mode="HTML",
     state=CodeStates.code
 )
