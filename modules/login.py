@@ -81,3 +81,21 @@ async def login_via_lks(session: ClientSession, login: str, password: str, data:
             return AuthStatus.SUCCESS
     except ClientConnectionError as E:
         return AuthStatus.SERVER_UNAVAILABLE
+
+
+async def parse_tasks(session: ClientSession):
+    """
+    Возвращает количество существующих задач или None, сессия может без авторизации
+    """
+    try:
+        async with session.get("https://kispython.ru/group/0") as page:
+            content = await page.read()
+            parse = BeautifulSoup(content, "html.parser")
+            login_form = parse.find(name="table")
+            if login_form is None:
+                return None
+            tr = login_form.find(name="thead").find("tr")
+            numbers = tr.find_all(name="a")
+            return len(numbers)
+    except ClientConnectionError as E:
+        return None
