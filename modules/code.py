@@ -4,8 +4,6 @@ from aiogram.filters import Command, or_f
 from aiogram.fsm.context import FSMContext
 from bs4 import BeautifulSoup, NavigableString
 from aiogram.fsm.state import State, StatesGroup
-import operator
-from aiogram_dialog.widgets.text import Jinja
 from .db import UserData
 from .middleware import AuthMiddleware
 from typing import Dict, Any
@@ -13,13 +11,12 @@ from typing import Dict, Any
 from aiogram.filters.state import State, StatesGroup
 
 from aiogram_dialog import Window, Dialog, DialogManager, StartMode
-from aiogram_dialog.widgets.kbd import Button, ScrollingGroup, Back
-from aiogram_dialog.widgets.text import Const, List, Format
+from aiogram_dialog.widgets.kbd import ScrollingGroup, Back
+from aiogram_dialog.widgets.text import Const, Format
 
 from aiogram_dialog.widgets.kbd import Select, Column
 
 import requests
-
 
 class CodeStates(StatesGroup):
     group = State()
@@ -74,8 +71,19 @@ async def get_task_condition(manager: DialogManager):  # TODO: сделать у
 
     print(manager.dialog_data["condition"])
 
+from pprint import pprint
+
 async def on_group_selected(callback: CallbackQuery, widget: Any,
                             manager: DialogManager, item_id: str):
+    pprint(vars(manager))
+    print(manager.start_data)
+    print(manager.dialog_data.get('bot'))
+    data = await manager.load_data()
+    bot = data.get('bot')
+    print(bot)
+    bot = manager.middleware_data.get('bot')
+    
+    await bot.
     manager.dialog_data["group"] = item_id
     print("Group selected: ", item_id)
     await manager.switch_to(CodeStates.task)
@@ -92,9 +100,11 @@ async def on_variant_selected(callback: CallbackQuery, widget: Any,
                               manager: DialogManager, item_id: str):
     manager.dialog_data["variant"] = item_id
     print("Variant selected:", item_id)
-    await get_task_condition(manager)
+    data = manager.dialog_data
+    condifion_url = f"https://kispython.ru/docs/{data['task']}/{groups[int(data['group'])]}.html"
+    manager.dialog_data['condition'] = condifion_url
+    #await get_task_condition(manager)
     await manager.switch_to(CodeStates.code)
-
 
 group = Window(
     Const("Выберите группу"),
@@ -154,7 +164,7 @@ variant = Window(
     state=CodeStates.variant
 )
 task_display = Window(
-    Format("{dialog_data[condition]}"),
+    Format("Условие {dialog_data[condition]}"),
     Back(text=Const("Назад")),
     parse_mode="HTML",
     state=CodeStates.code
