@@ -21,7 +21,6 @@ from aiogram.types import BufferedInputFile
 from aiogram import Bot
 
 from aiohttp import ClientSession
-from aiohttp import ClientConnectionError
 
 
 class CodeStates(StatesGroup):
@@ -50,6 +49,7 @@ async def get_primary_data(*args, **kwargs):
 async def get_content(link):
     async with ClientSession() as session:
         async with session.get(link) as page:
+            assert page.status == 200
             text = await page.text('utf-8')
     return text
 
@@ -57,13 +57,16 @@ async def get_content(link):
 async def get_task_condition(manager: DialogManager):  # TODO: сделать устойчивость к плохим request'ам
     data = manager.dialog_data
     link = f"https://kispython.ru/docs/{data['task']}/{groups[int(data['group'])]}.html"
-
     bot = manager._data.get('bot')
     chat_id = manager._data.get('event_chat').id
-    
+    flag = False
+    content = None
     try:
         content = await get_content(link)
     except Exception as E:
+        flag = True
+
+    if content is None or len(content) == 0 or flag:
         return await bot.send_message(chat_id, "Ошибка при парсинге сайта")
 
     parse = BeautifulSoup(content, "html.parser")
@@ -160,7 +163,7 @@ variant = Window(
                 Format("{item}"),
                 items="variants",
                 id="variants",
-                item_id_getter=lambda x: x - 1,
+                item_id_getter=lambda x: x,
                 on_click=on_variant_selected
             ),
         ),
