@@ -23,15 +23,17 @@ async def on_shutdown(db: Dict[int, UserData]):
         if session is not None and not session.closed:
             await session.close()
 
-load_dotenv()
+load_dotenv("./.env")
 
 API_TOKEN = os.getenv("BOT_TOKEN")
+print("Токен", API_TOKEN)
 db = {}
 
 commands = [
     BotCommand(command="auth", description="Авторизоваться через ЛКС МИРЭА"),
     BotCommand(command="code", description="Начать решать задачи"),
-    BotCommand(command="quit", description="Выйти из ЛКС МИРЭА")
+    BotCommand(command="quit", description="Выйти из ЛКС МИРЭА"),
+    BotCommand(command="test", description="Тест"),
 ]
 
 

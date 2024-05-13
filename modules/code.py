@@ -15,8 +15,14 @@ from aiogram_dialog.widgets.kbd import ScrollingGroup, Back
 from aiogram_dialog.widgets.text import Const, Format
 
 from aiogram_dialog.widgets.kbd import Select, Column
-
 import requests
+
+from aiogram.types import BufferedInputFile
+from aiogram import Bot
+
+from aiohttp import ClientSession
+from aiohttp import ClientConnectionError
+
 
 class CodeStates(StatesGroup):
     group = State()
@@ -41,13 +47,26 @@ async def get_primary_data(*args, **kwargs):
             "variants": variants}
 
 
+async def get_content(link):
+    async with ClientSession() as session:
+        async with session.get(link) as page:
+            text = await page.text('utf-8')
+    return text
+
+
 async def get_task_condition(manager: DialogManager):  # TODO: сделать устойчивость к плохим request'ам
     data = manager.dialog_data
     link = f"https://kispython.ru/docs/{data['task']}/{groups[int(data['group'])]}.html"
-    content = requests.get(link)
-    content.encoding = "utf-8"
 
-    parse = BeautifulSoup(content.text, "html.parser")
+    bot = manager._data.get('bot')
+    chat_id = manager._data.get('event_chat').id
+    
+    try:
+        content = await get_content(link)
+    except Exception as E:
+        return await bot.send_message(chat_id, "Ошибка при парсинге сайта")
+
+    parse = BeautifulSoup(content, "html.parser")
     tag = parse.find(name="h2", id=f"вариант-{data['variant']}")
     next_variant = f"вариант-{int(data['variant']) + 1}"
     html = str(tag)
@@ -64,26 +83,14 @@ async def get_task_condition(manager: DialogManager):  # TODO: сделать у
         html += str(next_sibling)
         next_sibling = skip_br(next_sibling.next_sibling)
 
-    manager.dialog_data["condition"] = html
-    
-    with open("out.html", "w") as file:
-        file.write(html)
+    file_name = f"{data['task']}_{groups[int(data['group'])]}_вариант-{data['variant']}.html"
 
-    print(manager.dialog_data["condition"])
+    await bot.send_document(chat_id, BufferedInputFile(html.encode('utf-8'), file_name))
 
-from pprint import pprint
 
 async def on_group_selected(callback: CallbackQuery, widget: Any,
                             manager: DialogManager, item_id: str):
-    pprint(vars(manager))
-    print(manager.start_data)
-    print(manager.dialog_data.get('bot'))
-    data = await manager.load_data()
-    bot = data.get('bot')
-    print(bot)
-    bot = manager.middleware_data.get('bot')
     
-    await bot.
     manager.dialog_data["group"] = item_id
     print("Group selected: ", item_id)
     await manager.switch_to(CodeStates.task)
@@ -101,9 +108,10 @@ async def on_variant_selected(callback: CallbackQuery, widget: Any,
     manager.dialog_data["variant"] = item_id
     print("Variant selected:", item_id)
     data = manager.dialog_data
-    condifion_url = f"https://kispython.ru/docs/{data['task']}/{groups[int(data['group'])]}.html"
+    condifion_url = (f"https://kispython.ru/docs/{data['task']}/" +
+    f"{groups[int(data['group'])]}.html#вариант-{int(data['variant'])}")
     manager.dialog_data['condition'] = condifion_url
-    #await get_task_condition(manager)
+    await get_task_condition(manager)
     await manager.switch_to(CodeStates.code)
 
 group = Window(
@@ -176,6 +184,34 @@ code_router = Router(name=__name__)
 # Неавторизованные пользователи автоматом будут отфильтровываться
 # code_router.message.outer_middleware(AuthMiddleware())
 # Далее можно считать, что работа идёт только с авторизованными
+
+@code_router.message(Command("test"))
+async def send_pdf(message: Message, bot: Bot):
+    link = f"https://kispython.ru/docs/11/ИКБО-04-22.html"
+    content = requests.get(link)
+    content.encoding = "utf-8"
+
+    parse = BeautifulSoup(content.text, "html.parser")
+    tag = parse.find(name="h2", id=f"вариант-{11}")
+    next_variant = f"вариант-{12}"
+    html = str(tag)
+    
+    def skip_br(tag):
+        # Пропускает NavigableString "\n"
+        if isinstance(tag, NavigableString):
+            return tag.next_sibling
+        return tag
+    
+    next_sibling = skip_br(tag.next_sibling)
+    
+    while next_sibling is not None and next_sibling.attrs.get('id') != next_variant:
+        html += str(next_sibling)
+        next_sibling = skip_br(next_sibling.next_sibling)
+
+    with open("out.html", "w") as file:
+        file.write(html)
+    
+    await message.reply_document(BufferedInputFile(html.encode('utf-8'), 'test.html'))
 
 
 @code_router.message(or_f(Command("code"), F.text == "code"))
