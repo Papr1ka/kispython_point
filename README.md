@@ -1,7 +1,37 @@
 # kispython_point
 
+Функциональные требования к приложению:
+
+- Мне как студенту, изучающему курс Python нужно сдать домашние работы.
+
+- Как пользователю telegram-а мне удобно отправлять решение в telegram.
+
+- Как человеку занятому, мне не хочется заботиться о PEP8.
+
+## Зависимости
+
+### Бот
+
+Зависимости в файле requirements.txt
+
+### Документация
+
+Зависимости в файле docs/requirements.txt
+
 ## Запуск
 
-`docker build -t kispython_point .`
+### Запуск бота
 
-`docker run --env-file ./.env kispython_point`
+1. `docker build -t kispython_point .`
+
+2. Задайте переменной окружения `BOT_TOKEN` значение токена бота или передайте напрямую в следующую команду
+
+3. `docker run --env BOT_TOKEN=${BOT_TOKEN} kispython_point`
+
+### Построение документации
+
+1. `python -m venv venv && source ./venv/bin/activate`
+
+2. `python -m pip install -r requirements.txt`
+
+3. `python setup.py build_sphinx -s ./docs/source/ --build-dir ./docs/build -b html`
