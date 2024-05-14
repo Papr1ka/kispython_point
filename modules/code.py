@@ -17,6 +17,18 @@ from aiogram_dialog.widgets.text import Const, Format
 from .db import UserData
 from .middleware import AuthMiddleware
 
+template = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kispython_point</title>
+</head>
+<body>
+    {}
+</body>
+</html>"""
+
 
 logger = getLogger(__name__)
 
@@ -108,7 +120,7 @@ async def get_task_condition_html(link: str, variant: int) -> Union[str, None]:
         html += str(next_sibling)
         next_sibling = skip_br(next_sibling.next_sibling)
     logger.info(f"Условие получено")
-    return html
+    return template.format(html)
 
 
 async def format_code(code: str) -> Tuple[Union[str, None], int]:
