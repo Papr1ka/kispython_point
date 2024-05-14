@@ -1,1 +1,2 @@
+pip install sphinx-rtd-theme
 furo==2021.11.16
