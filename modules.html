@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="rus">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>modules package &mdash; kispython_point 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=8c1e400a"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to kispython_point&#39;s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            kispython_point
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">modules package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.auth">modules.auth module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules.auth.AuthData"><code class="docutils literal notranslate"><span class="pre">AuthData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modules.auth.AuthData.login_password"><code class="docutils literal notranslate"><span class="pre">AuthData.login_password</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.auth.cancel_handler"><code class="docutils literal notranslate"><span class="pre">cancel_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.auth.hide_value"><code class="docutils literal notranslate"><span class="pre">hide_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.auth.login_handler"><code class="docutils literal notranslate"><span class="pre">login_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.auth.quit_handler"><code class="docutils literal notranslate"><span class="pre">quit_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.auth.start_handler"><code class="docutils literal notranslate"><span class="pre">start_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.code">modules.code module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.CodeStates"><code class="docutils literal notranslate"><span class="pre">CodeStates</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.code"><code class="docutils literal notranslate"><span class="pre">CodeStates.code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.group"><code class="docutils literal notranslate"><span class="pre">CodeStates.group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.task"><code class="docutils literal notranslate"><span class="pre">CodeStates.task</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.variant"><code class="docutils literal notranslate"><span class="pre">CodeStates.variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.code_handler"><code class="docutils literal notranslate"><span class="pre">code_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.get_content"><code class="docutils literal notranslate"><span class="pre">get_content()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.get_primary_data"><code class="docutils literal notranslate"><span class="pre">get_primary_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.get_task_condition_html"><code class="docutils literal notranslate"><span class="pre">get_task_condition_html()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.on_group_selected"><code class="docutils literal notranslate"><span class="pre">on_group_selected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.on_task_selected"><code class="docutils literal notranslate"><span class="pre">on_task_selected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.on_variant_selected"><code class="docutils literal notranslate"><span class="pre">on_variant_selected()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.db">modules.db module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules.db.UserData"><code class="docutils literal notranslate"><span class="pre">UserData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modules.db.UserData.authorized"><code class="docutils literal notranslate"><span class="pre">UserData.authorized</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.db.UserData.passes"><code class="docutils literal notranslate"><span class="pre">UserData.passes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.db.UserData.session"><code class="docutils literal notranslate"><span class="pre">UserData.session</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.db.UserData.session_data"><code class="docutils literal notranslate"><span class="pre">UserData.session_data</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.login">modules.login module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules.login.AuthStatus"><code class="docutils literal notranslate"><span class="pre">AuthStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modules.login.AuthStatus.INVALID_AUTH_DATA"><code class="docutils literal notranslate"><span class="pre">AuthStatus.INVALID_AUTH_DATA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.login.AuthStatus.SERVER_UNAVAILABLE"><code class="docutils literal notranslate"><span class="pre">AuthStatus.SERVER_UNAVAILABLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.login.AuthStatus.SUCCESS"><code class="docutils literal notranslate"><span class="pre">AuthStatus.SUCCESS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.login.AuthStatus.TOO_MANY_ATTEMPTS"><code class="docutils literal notranslate"><span class="pre">AuthStatus.TOO_MANY_ATTEMPTS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.login.AuthStatus.UNDEFINED_ERROR"><code class="docutils literal notranslate"><span class="pre">AuthStatus.UNDEFINED_ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules.login.AuthStatus.get_message"><code class="docutils literal notranslate"><span class="pre">AuthStatus.get_message()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.login.login_via_lks"><code class="docutils literal notranslate"><span class="pre">login_via_lks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.login.parse_tasks"><code class="docutils literal notranslate"><span class="pre">parse_tasks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.login.prepare_session_for_login"><code class="docutils literal notranslate"><span class="pre">prepare_session_for_login()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-modules.middleware">modules.middleware module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules.middleware.AuthMiddleware"><code class="docutils literal notranslate"><span class="pre">AuthMiddleware</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kispython_point</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">modules package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modules-package">
+<h1>modules package<a class="headerlink" href="#modules-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-modules.auth">
+<span id="modules-auth-module"></span><h2>modules.auth module<a class="headerlink" href="#module-modules.auth" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modules.auth.AuthData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">AuthData</span></span><a class="reference internal" href="_modules/modules/auth.html#AuthData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.AuthData" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StatesGroup</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.auth.AuthData.login_password">
+<span class="sig-name descname"><span class="pre">login_password</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'AuthData:login_password'&gt;</span></em><a class="headerlink" href="#modules.auth.AuthData.login_password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.auth.cancel_handler">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">cancel_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/auth.html#cancel_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.cancel_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик команды calcel, выходит из автомата</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.auth.hide_value">
+<span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">hide_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/modules/auth.html#hide_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.hide_value" title="Permalink to this definition"></a></dt>
+<dd><p>Маскирует пароль, показывая только первые и последние 1 или n символов
+в зависимости от длины пароля</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>str</em>) -- пароль</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>опционально</em>) -- количество символов для сокрытия, по умолчанию 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>замаскированная строка</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.auth.login_handler">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">login_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Bot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><span class="pre">UserData</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/auth.html#login_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.login_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик некорректного ввода данных в состоянии ввода логина и пароля</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>Message</em>) -- сообщение</p></li>
+<li><p><strong>bot</strong> (<em>Bot</em>) -- бот</p></li>
+<li><p><strong>state</strong> (<em>FSMContext</em>) -- состояние автомата</p></li>
+<li><p><strong>db</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><em>UserData</em></a><em>]</em>) -- внутренний кэш с данными пользователей</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.auth.quit_handler">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">quit_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><span class="pre">UserData</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/auth.html#quit_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.quit_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик команды quit, удаляет авторизацию пользователя</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>Message</em>) -- сообщение</p></li>
+<li><p><strong>state</strong> (<em>FSMContext</em>) -- состояние автомата</p></li>
+<li><p><strong>db</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><em>UserData</em></a><em>]</em>) -- внутренний кэш с данными пользователей</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.auth.start_handler">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">start_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/auth.html#start_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.start_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик команды auth, входит в автомат AuthData</p>
+</dd></dl>
+
+</section>
+<section id="module-modules.code">
+<span id="modules-code-module"></span><h2>modules.code module<a class="headerlink" href="#module-modules.code" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modules.code.CodeStates">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">CodeStates</span></span><a class="reference internal" href="_modules/modules/code.html#CodeStates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.CodeStates" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StatesGroup</span></code></p>
+<p>Хранилище данных конечного автомата выбора задачи</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.code.CodeStates.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:code'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.code" title="Permalink to this definition"></a></dt>
+<dd><p>Код решения</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.code.CodeStates.group">
+<span class="sig-name descname"><span class="pre">group</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:group'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.group" title="Permalink to this definition"></a></dt>
+<dd><p>Группа</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.code.CodeStates.task">
+<span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:task'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.task" title="Permalink to this definition"></a></dt>
+<dd><p>Номер задания, на 1 меньше фактического (индекс)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.code.CodeStates.variant">
+<span class="sig-name descname"><span class="pre">variant</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:variant'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.variant" title="Permalink to this definition"></a></dt>
+<dd><p>Номер варианта</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.code_handler">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">code_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><span class="pre">UserData</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dialog_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#code_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.code_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик команды code, входит в конечный автомат CodeStates</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.get_content">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">get_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#get_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.get_content" title="Permalink to this definition"></a></dt>
+<dd><p>Возвращает текст страницы с заданием или выбрасывает исключение,
+если страница не найдена</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>link</strong> (<em>str</em>) -- Ссылка на страницу с заданием</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Текст страницы</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.get_primary_data">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">get_primary_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#get_primary_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.get_primary_data" title="Permalink to this definition"></a></dt>
+<dd><p>Формирует данные для отображения в виждетах</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Словарь с данными</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, List[str, ...]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.get_task_condition_html">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">get_task_condition_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/modules/code.html#get_task_condition_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.get_task_condition_html" title="Permalink to this definition"></a></dt>
+<dd><p>Возвращает html код страницы с условием задачи варианта</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>link</strong> (<em>str</em>) -- Ссылка на страницу с заданием</p></li>
+<li><p><strong>variant</strong> (<em>int</em>) -- Номер варианта</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>html код страницы или None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[str, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.on_group_selected">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">on_group_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CallbackQuery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#on_group_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.on_group_selected" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик события выбора группы</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.on_task_selected">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">on_task_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CallbackQuery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#on_task_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.on_task_selected" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик события выбора задания</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.on_variant_selected">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">on_variant_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CallbackQuery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#on_variant_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.on_variant_selected" title="Permalink to this definition"></a></dt>
+<dd><p>Обработчик события выбора варианта задания</p>
+</dd></dl>
+
+</section>
+<section id="module-modules.db">
+<span id="modules-db-module"></span><h2>modules.db module<a class="headerlink" href="#module-modules.db" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modules.db.UserData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.db.</span></span><span class="sig-name descname"><span class="pre">UserData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authorized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientSession</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/db.html#UserData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.db.UserData" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Объект данных, связанных с пользователем в кэше</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.db.UserData.authorized">
+<span class="sig-name descname"><span class="pre">authorized</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#modules.db.UserData.authorized" title="Permalink to this definition"></a></dt>
+<dd><p>Авторизован ли пользователь</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.db.UserData.passes">
+<span class="sig-name descname"><span class="pre">passes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#modules.db.UserData.passes" title="Permalink to this definition"></a></dt>
+<dd><p>Кол-во попыток решения задачи</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.db.UserData.session">
+<span class="sig-name descname"><span class="pre">session</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClientSession</span></em><a class="headerlink" href="#modules.db.UserData.session" title="Permalink to this definition"></a></dt>
+<dd><p>Объект сессии с токенами для авторизации</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.db.UserData.session_data">
+<span class="sig-name descname"><span class="pre">session_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#modules.db.UserData.session_data" title="Permalink to this definition"></a></dt>
+<dd><p>Данные для авторизации (передаётся в login_via_lks)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-modules.login">
+<span id="modules-login-module"></span><h2>modules.login module<a class="headerlink" href="#module-modules.login" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modules.login.AuthStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.login.</span></span><span class="sig-name descname"><span class="pre">AuthStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/login.html#AuthStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.login.AuthStatus" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Статус результата авторизации</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.login.AuthStatus.INVALID_AUTH_DATA">
+<span class="sig-name descname"><span class="pre">INVALID_AUTH_DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(1,</span> <span class="pre">'Неверные</span> <span class="pre">данные</span> <span class="pre">для</span> <span class="pre">авторизации')</span></em><a class="headerlink" href="#modules.login.AuthStatus.INVALID_AUTH_DATA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.login.AuthStatus.SERVER_UNAVAILABLE">
+<span class="sig-name descname"><span class="pre">SERVER_UNAVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">'Сервер</span> <span class="pre">недоступен,</span> <span class="pre">попробуйте</span> <span class="pre">позже')</span></em><a class="headerlink" href="#modules.login.AuthStatus.SERVER_UNAVAILABLE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.login.AuthStatus.SUCCESS">
+<span class="sig-name descname"><span class="pre">SUCCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(3,</span> <span class="pre">'Успешно')</span></em><a class="headerlink" href="#modules.login.AuthStatus.SUCCESS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.login.AuthStatus.TOO_MANY_ATTEMPTS">
+<span class="sig-name descname"><span class="pre">TOO_MANY_ATTEMPTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2,</span> <span class="pre">'Слишком</span> <span class="pre">много</span> <span class="pre">неудачных</span> <span class="pre">попыток')</span></em><a class="headerlink" href="#modules.login.AuthStatus.TOO_MANY_ATTEMPTS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="modules.login.AuthStatus.UNDEFINED_ERROR">
+<span class="sig-name descname"><span class="pre">UNDEFINED_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(4,</span> <span class="pre">'Ошибка')</span></em><a class="headerlink" href="#modules.login.AuthStatus.UNDEFINED_ERROR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modules.login.AuthStatus.get_message">
+<span class="sig-name descname"><span class="pre">get_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/login.html#AuthStatus.get_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.login.AuthStatus.get_message" title="Permalink to this definition"></a></dt>
+<dd><p>Возвращает строковое обозначение ошибки</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Строка с обозначением ошибки</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.login.login_via_lks">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.login.</span></span><span class="sig-name descname"><span class="pre">login_via_lks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientSession</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#modules.login.AuthStatus" title="modules.login.AuthStatus"><span class="pre">AuthStatus</span></a></span></span><a class="reference internal" href="_modules/modules/login.html#login_via_lks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.login.login_via_lks" title="Permalink to this definition"></a></dt>
+<dd><p>Авторизует пользователя с парой login, password, все токены записываются в session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>ClientSession</em>) -- объект сессии</p></li>
+<li><p><strong>login</strong> (<em>str</em>) -- логин пользователя</p></li>
+<li><p><strong>password</strong> (<em>str</em>) -- пароль пользователя</p></li>
+<li><p><strong>data</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) -- Словарь, возвращаемый prepare_session_for_login</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cтатус ответа</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#modules.login.AuthStatus" title="modules.login.AuthStatus">AuthStatus</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.login.parse_tasks">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.login.</span></span><span class="sig-name descname"><span class="pre">parse_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientSession</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/modules/login.html#parse_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.login.parse_tasks" title="Permalink to this definition"></a></dt>
+<dd><p>Возвращает количество существующих задач, доступных к решению или None,
+объект сессии может быть любым</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>ClientSession</em>) -- Объект сесси</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Количество ошибок или None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[int, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.login.prepare_session_for_login">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.login.</span></span><span class="sig-name descname"><span class="pre">prepare_session_for_login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientSession</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#modules.login.AuthStatus" title="modules.login.AuthStatus"><span class="pre">AuthStatus</span></a></span></span><a class="reference internal" href="_modules/modules/login.html#prepare_session_for_login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.login.prepare_session_for_login" title="Permalink to this definition"></a></dt>
+<dd><p>Подготавливает ссылки и csrf_token для будущей авторизации</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>ClientSession</em>) -- объект сессии</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cтатус ответа</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#modules.login.AuthStatus" title="modules.login.AuthStatus">AuthStatus</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-modules.middleware">
+<span id="modules-middleware-module"></span><h2>modules.middleware module<a class="headerlink" href="#module-modules.middleware" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="modules.middleware.AuthMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.middleware.</span></span><span class="sig-name descname"><span class="pre">AuthMiddleware</span></span><a class="reference internal" href="_modules/modules/middleware.html#AuthMiddleware"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.middleware.AuthMiddleware" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMiddleware</span></code></p>
+<p>При включении в маршрутизатор гарантирует,
+что команда будет обработана только если пользователь авторизован</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to kispython_point&#39;s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Papr1ka &amp; InfiRRiar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="rus">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>modules.login &mdash; kispython_point 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=8c1e400a"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            kispython_point
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">modules package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">kispython_point</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">modules.login</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for modules.login</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ClientSession</span>
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ClientConnectionError</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+
+<span class="n">AUTH_URL</span> <span class="o">=</span> <span class="s2">&quot;https://kispython.ru/login/lks&quot;</span>
+
+
+<div class="viewcode-block" id="AuthStatus"><a class="viewcode-back" href="../../modules.html#modules.login.AuthStatus">[docs]</a><span class="k">class</span> <span class="nc">AuthStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>   
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Статус результата авторизации</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SERVER_UNAVAILABLE</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Сервер недоступен, попробуйте позже&quot;</span>
+    <span class="n">INVALID_AUTH_DATA</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Неверные данные для авторизации&quot;</span>
+    <span class="n">TOO_MANY_ATTEMPTS</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Слишком много неудачных попыток&quot;</span>
+    <span class="n">SUCCESS</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Успешно&quot;</span>
+    <span class="n">UNDEFINED_ERROR</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Ошибка&quot;</span>
+
+<div class="viewcode-block" id="AuthStatus.get_message"><a class="viewcode-back" href="../../modules.html#modules.login.AuthStatus.get_message">[docs]</a>    <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Возвращает строковое обозначение ошибки</span>
+
+<span class="sd">        :return: Строка с обозначением ошибки</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="prepare_session_for_login"><a class="viewcode-back" href="../../modules.html#modules.login.prepare_session_for_login">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">prepare_session_for_login</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthStatus</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Подготавливает ссылки и csrf_token для будущей авторизации</span>
+
+<span class="sd">    :param session: объект сессии</span>
+<span class="sd">    :type session: ClientSession</span>
+<span class="sd">    :return: Cтатус ответа</span>
+<span class="sd">    :rtype: AuthStatus</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AUTH_URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="s2">&quot;https://kispython.ru/&quot;</span><span class="p">})</span> <span class="k">as</span> <span class="n">page</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">page</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span><span class="p">,</span> <span class="kc">None</span>
+
+            <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">log_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">parse</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+            <span class="n">csrf_tag</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;csrfmiddlewaretoken&quot;</span><span class="p">})</span>  <span class="c1"># CSRF код</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">csrf_tag</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+            <span class="n">next_tag</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;next&quot;</span><span class="p">})</span>  <span class="c1"># адрес следующего редиректа</span>
+            <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_tag</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span> <span class="p">{</span>
+                <span class="s2">&quot;log_url&quot;</span><span class="p">:</span> <span class="n">log_url</span><span class="p">,</span>
+                <span class="s2">&quot;csrfmiddlewaretoken&quot;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+                <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="n">next_url</span>
+            <span class="p">}</span>
+    <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span><span class="p">,</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="login_via_lks"><a class="viewcode-back" href="../../modules.html#modules.login.login_via_lks">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">login_via_lks</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">ClientSession</span><span class="p">,</span> <span class="n">login</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AuthStatus</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Авторизует пользователя с парой login, password, все токены записываются в session</span>
+
+<span class="sd">    :param session: объект сессии</span>
+<span class="sd">    :type session: ClientSession</span>
+<span class="sd">    :param login: логин пользователя</span>
+<span class="sd">    :type login: str</span>
+<span class="sd">    :param password: пароль пользователя</span>
+<span class="sd">    :type password: str</span>
+<span class="sd">    :param data: Словарь, возвращаемый prepare_session_for_login</span>
+<span class="sd">    :type data: Dict[str, str]</span>
+<span class="sd">    :return: Cтатус ответа</span>
+<span class="sd">    :rtype: AuthStatus</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">login</span><span class="o">=</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+    <span class="n">log_url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;log_url&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">log_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="n">log_url</span><span class="p">})</span> <span class="k">as</span> <span class="n">page</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">page</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span>
+
+            <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">parse</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+            <span class="n">login_form</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;mirea-users-loginform&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">login_form</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">login_form</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Указан неверный логин/пароль&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">INVALID_AUTH_DATA</span>
+            <span class="k">elif</span> <span class="n">login_form</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">login_form</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Превышено количество неудачных попыток входа&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">TOO_MANY_ATTEMPTS</span>
+            <span class="k">elif</span> <span class="n">login_form</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">UNDEFINED_ERROR</span>
+            <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SUCCESS</span>
+    <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span></div>
+
+
+<div class="viewcode-block" id="parse_tasks"><a class="viewcode-back" href="../../modules.html#modules.login.parse_tasks">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">parse_tasks</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Возвращает количество существующих задач, доступных к решению или None,</span>
+<span class="sd">    объект сессии может быть любым</span>
+
+<span class="sd">    :param session: Объект сесси</span>
+<span class="sd">    :type session: ClientSession</span>
+<span class="sd">    :return: Количество ошибок или None</span>
+<span class="sd">    :rtype: Union[int, None]</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://kispython.ru/group/0&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">page</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">parse</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+            <span class="n">login_form</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">login_form</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="n">tr</span> <span class="o">=</span> <span class="n">login_form</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;thead&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;tr&quot;</span><span class="p">)</span>
+            <span class="n">numbers</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Papr1ka &amp; InfiRRiar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

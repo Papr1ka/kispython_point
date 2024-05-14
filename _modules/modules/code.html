@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="rus">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>modules.code &mdash; kispython_point 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=8c1e400a"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            kispython_point
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">modules package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">kispython_point</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">modules.code</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for modules.code</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ClientSession</span><span class="p">,</span> <span class="n">ClientConnectionError</span>
+<span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">Router</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">Bot</span>
+<span class="kn">from</span> <span class="nn">aiogram.types</span> <span class="kn">import</span> <span class="n">Message</span><span class="p">,</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">BufferedInputFile</span>
+<span class="kn">from</span> <span class="nn">aiogram.filters</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">or_f</span>
+<span class="kn">from</span> <span class="nn">aiogram.filters.state</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">StatesGroup</span>
+<span class="kn">from</span> <span class="nn">aiogram.fsm.context</span> <span class="kn">import</span> <span class="n">FSMContext</span>
+<span class="kn">from</span> <span class="nn">aiogram.fsm.state</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">StatesGroup</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span><span class="p">,</span> <span class="n">NavigableString</span>
+
+<span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">Window</span><span class="p">,</span> <span class="n">Dialog</span><span class="p">,</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">StartMode</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.kbd</span> <span class="kn">import</span> <span class="n">ScrollingGroup</span><span class="p">,</span> <span class="n">Back</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.text</span> <span class="kn">import</span> <span class="n">Const</span><span class="p">,</span> <span class="n">Format</span>
+
+<span class="kn">from</span> <span class="nn">.db</span> <span class="kn">import</span> <span class="n">UserData</span>
+<span class="kn">from</span> <span class="nn">.middleware</span> <span class="kn">import</span> <span class="n">AuthMiddleware</span>
+
+
+<div class="viewcode-block" id="CodeStates"><a class="viewcode-back" href="../../modules.html#modules.code.CodeStates">[docs]</a><span class="k">class</span> <span class="nc">CodeStates</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Хранилище данных конечного автомата выбора задачи</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#: Группа</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+    <span class="c1">#: Номер задания, на 1 меньше фактического (индекс)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+    <span class="c1">#: Номер варианта</span>
+    <span class="n">variant</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+    <span class="c1">#: Код решения</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span></div>
+
+
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ИВБО-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">-22&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+<span class="n">groups</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ИКБО-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">-22&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">37</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">34</span><span class="p">]]</span>
+<span class="n">groups</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ИМБО-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">-22&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="n">groups</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ИНБО-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">-22&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span>
+
+<span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span>
+
+<span class="n">variants</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">41</span><span class="p">)]</span>
+
+
+<div class="viewcode-block" id="get_primary_data"><a class="viewcode-back" href="../../modules.html#modules.code.get_primary_data">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_primary_data</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Формирует данные для отображения в виждетах</span>
+<span class="sd">    </span>
+<span class="sd">    :return: Словарь с данными</span>
+<span class="sd">    :rtype: Dict[str, List[str, ...]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="n">groups</span><span class="p">,</span>
+            <span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="n">tasks</span><span class="p">,</span>
+            <span class="s2">&quot;variants&quot;</span><span class="p">:</span> <span class="n">variants</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="get_content"><a class="viewcode-back" href="../../modules.html#modules.code.get_content">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_content</span><span class="p">(</span><span class="n">link</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Возвращает текст страницы с заданием или выбрасывает исключение,</span>
+<span class="sd">    если страница не найдена</span>
+<span class="sd">    </span>
+<span class="sd">    :param link: Ссылка на страницу с заданием</span>
+<span class="sd">    :type link: str</span>
+<span class="sd">    :return: Текст страницы</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="k">as</span> <span class="n">page</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">page</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">200</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="get_task_condition_html"><a class="viewcode-back" href="../../modules.html#modules.code.get_task_condition_html">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_task_condition_html</span><span class="p">(</span><span class="n">link</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Возвращает html код страницы с условием задачи варианта</span>
+
+<span class="sd">    :param link: Ссылка на страницу с заданием</span>
+<span class="sd">    :type link: str</span>
+<span class="sd">    :param variant: Номер варианта</span>
+<span class="sd">    :type variant: int</span>
+<span class="sd">    :return: html код страницы или None</span>
+<span class="sd">    :rtype: Union[str, None]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_content</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">ClientConnectionError</span><span class="p">):</span>
+        <span class="k">return</span>
+    
+    <span class="n">parse</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;h2&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;вариант-</span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">next_variant</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;вариант-</span><span class="si">{</span><span class="n">variant</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">skip_br</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+        <span class="c1"># Пропускает NavigableString &quot;\n&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">NavigableString</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">tag</span><span class="o">.</span><span class="n">next_sibling</span>
+        <span class="k">return</span> <span class="n">tag</span>
+    
+    <span class="n">next_sibling</span> <span class="o">=</span> <span class="n">skip_br</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">next_sibling</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">next_sibling</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">next_variant</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">next_sibling</span><span class="p">)</span>
+        <span class="n">next_sibling</span> <span class="o">=</span> <span class="n">skip_br</span><span class="p">(</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">html</span></div>
+
+
+<div class="viewcode-block" id="on_group_selected"><a class="viewcode-back" href="../../modules.html#modules.code.on_group_selected">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">on_group_selected</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+                            <span class="n">manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Обработчик события выбора группы</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_id</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Group selected: &quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">manager</span><span class="o">.</span><span class="n">switch_to</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">task</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="on_task_selected"><a class="viewcode-back" href="../../modules.html#modules.code.on_task_selected">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">on_task_selected</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+                           <span class="n">manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Обработчик события выбора задания</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_id</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task selected: &quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">manager</span><span class="o">.</span><span class="n">switch_to</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">variant</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="on_variant_selected"><a class="viewcode-back" href="../../modules.html#modules.code.on_variant_selected">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">on_variant_selected</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+                              <span class="n">manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Обработчик события выбора варианта задания</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s2">&quot;variant&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_id</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variant selected:&quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">)</span>
+    
+    <span class="n">bot</span><span class="p">:</span> <span class="n">Bot</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bot&#39;</span><span class="p">)</span>
+    <span class="n">chat_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;event_chat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+    
+    <span class="n">variant</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">item_id</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span>
+    <span class="n">condition_url</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;https://kispython.ru/docs/</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;task&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/&quot;</span> <span class="o">+</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">groups</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">])]</span><span class="si">}</span><span class="s2">.html#вариант-</span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    
+    <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">condition_url</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;task&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">groups</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">])]</span><span class="si">}</span><span class="s2">_вариант-</span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">.html&quot;</span>
+    
+    <span class="n">html</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_task_condition_html</span><span class="p">(</span><span class="n">condition_url</span><span class="p">,</span> <span class="n">variant</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">html</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">chat_id</span><span class="p">,</span> <span class="s2">&quot;К сожалению, условие не найдено&quot;</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">bot</span><span class="o">.</span><span class="n">send_document</span><span class="p">(</span><span class="n">chat_id</span><span class="p">,</span> <span class="n">BufferedInputFile</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="n">file_name</span><span class="p">))</span>
+    <span class="k">await</span> <span class="n">manager</span><span class="o">.</span><span class="n">switch_to</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">code</span><span class="p">)</span></div>
+
+
+<span class="n">group</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span>
+    <span class="n">Const</span><span class="p">(</span><span class="s2">&quot;Выберите группу&quot;</span><span class="p">),</span>
+    <span class="n">ScrollingGroup</span><span class="p">(</span>
+        <span class="n">Column</span><span class="p">(</span>
+            <span class="n">Select</span><span class="p">(</span>
+                <span class="n">Format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{item}</span><span class="s2">&quot;</span><span class="p">),</span>
+                <span class="n">items</span><span class="o">=</span><span class="s2">&quot;groups&quot;</span><span class="p">,</span>
+                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;groups&quot;</span><span class="p">,</span>
+                <span class="n">item_id_getter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">groups</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+                <span class="n">on_click</span><span class="o">=</span><span class="n">on_group_selected</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;groups_a&quot;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">10</span>
+    <span class="p">),</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">group</span>
+<span class="p">)</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span>
+    <span class="n">Const</span><span class="p">(</span><span class="s2">&quot;Выберите номер задачи&quot;</span><span class="p">),</span>
+    <span class="n">ScrollingGroup</span><span class="p">(</span>
+        <span class="n">Column</span><span class="p">(</span>
+            <span class="n">Select</span><span class="p">(</span>
+                <span class="n">Format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{item}</span><span class="s2">&quot;</span><span class="p">),</span>
+                <span class="n">items</span><span class="o">=</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span>
+                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span>
+                <span class="n">item_id_getter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">on_click</span><span class="o">=</span><span class="n">on_task_selected</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;tasks_a&quot;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">4</span>
+    <span class="p">),</span>
+    <span class="n">Back</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">Const</span><span class="p">(</span><span class="s2">&quot;Назад&quot;</span><span class="p">)),</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">task</span>
+<span class="p">)</span>
+
+<span class="n">variant</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span>
+    <span class="n">Const</span><span class="p">(</span><span class="s2">&quot;Выберите Ваш вариант&quot;</span><span class="p">),</span>
+    <span class="n">ScrollingGroup</span><span class="p">(</span>
+        <span class="n">Column</span><span class="p">(</span>
+            <span class="n">Select</span><span class="p">(</span>
+                <span class="n">Format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{item}</span><span class="s2">&quot;</span><span class="p">),</span>
+                <span class="n">items</span><span class="o">=</span><span class="s2">&quot;variants&quot;</span><span class="p">,</span>
+                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;variants&quot;</span><span class="p">,</span>
+                <span class="n">item_id_getter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                <span class="n">on_click</span><span class="o">=</span><span class="n">on_variant_selected</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;variants_a&quot;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">8</span>
+    <span class="p">),</span>
+    <span class="n">Back</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">Const</span><span class="p">(</span><span class="s2">&quot;Назад&quot;</span><span class="p">)),</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">variant</span>
+<span class="p">)</span>
+<span class="n">task_display</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span>
+    <span class="n">Format</span><span class="p">(</span><span class="s2">&quot;Условие </span><span class="si">{dialog_data[condition]}</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="n">Back</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">Const</span><span class="p">(</span><span class="s2">&quot;Назад&quot;</span><span class="p">)),</span>
+    <span class="n">parse_mode</span><span class="o">=</span><span class="s2">&quot;HTML&quot;</span><span class="p">,</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">code</span>
+<span class="p">)</span>
+
+<span class="n">code_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Неавторизованные пользователи автоматом будут отфильтровываться</span>
+<span class="c1"># code_router.message.outer_middleware(AuthMiddleware())</span>
+<span class="c1"># Далее можно считать, что работа идёт только с авторизованными</span>
+
+<div class="viewcode-block" id="code_handler"><a class="viewcode-back" href="../../modules.html#modules.code.code_handler">[docs]</a><span class="nd">@code_router</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">or_f</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;code&quot;</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">code_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">UserData</span><span class="p">],</span> <span class="n">state</span><span class="p">:</span> <span class="n">FSMContext</span><span class="p">,</span> <span class="n">dialog_manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Обработчик команды code, входит в конечный автомат CodeStates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">dialog_manager</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">StartMode</span><span class="o">.</span><span class="n">RESET_STACK</span><span class="p">,</span>
+                               <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span></div>
+
+
+<span class="n">dialog</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">variant</span><span class="p">,</span> <span class="n">task_display</span><span class="p">,</span>
+                <span class="n">getter</span><span class="o">=</span><span class="n">get_primary_data</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Papr1ka &amp; InfiRRiar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
