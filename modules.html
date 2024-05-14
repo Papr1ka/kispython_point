@@ -260,11 +260,13 @@
 <dt class="sig sig-object py" id="modules.code.format_code">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">format_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/modules/code.html#format_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.format_code" title="Permalink to this definition"></a></dt>
 <dd><p>Форматирует python-код в соответствии с PEP-8</p>
-<p>Возвращает отформатированный код и статус ответа:
-- Статус 200, код был отформатирован возвращает код
-- Статус 204, код был в соответствии с PEP-8 возвращает None
-- Статус 400, синтаксическая ошибка возвращает None
-- Статус 500, иная ошибка (сервера) возвращает None</p>
+<p>Возвращает отформатированный код и статус ответа:</p>
+<ul class="simple">
+<li><p>Статус 200, код был отформатирован возвращает код</p></li>
+<li><p>Статус 204, код был в соответствии с PEP-8 возвращает None</p></li>
+<li><p>Статус 400, синтаксическая ошибка возвращает None</p></li>
+<li><p>Статус 500, иная ошибка (сервера) возвращает None</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>code</strong> (<em>str</em>) -- код программы</p>
