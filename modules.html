@@ -68,6 +68,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#modules.code.code_handler"><code class="docutils literal notranslate"><span class="pre">code_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules.code.format_code"><code class="docutils literal notranslate"><span class="pre">format_code()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modules.code.get_content"><code class="docutils literal notranslate"><span class="pre">get_content()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modules.code.get_primary_data"><code class="docutils literal notranslate"><span class="pre">get_primary_data()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modules.code.get_task_condition_html"><code class="docutils literal notranslate"><span class="pre">get_task_condition_html()</span></code></a></li>
@@ -253,6 +254,27 @@
 <dt class="sig sig-object py" id="modules.code.code_handler">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">code_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><span class="pre">UserData</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dialog_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#code_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.code_handler" title="Permalink to this definition"></a></dt>
 <dd><p>Обработчик команды code, входит в конечный автомат CodeStates</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.code.format_code">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">format_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/modules/code.html#format_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.format_code" title="Permalink to this definition"></a></dt>
+<dd><p>Форматирует python-код в соответствии с PEP-8</p>
+<p>Возвращает отформатированный код и статус ответа
+Статус 200, код был отформатирован возвращает код
+Статус 204, код был в соответствии с PEP-8 возвращает None
+Статус 400, код был в соответствии с PEP-8 возвращает None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>str</em>) -- код программы</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>отформатировнный код программы или None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[Union[str, None], int]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

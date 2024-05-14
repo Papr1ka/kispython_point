@@ -71,7 +71,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for modules.code</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
 
 <span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ClientSession</span><span class="p">,</span> <span class="n">ClientConnectionError</span>
 <span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">Router</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">Bot</span>
@@ -88,6 +89,9 @@
 
 <span class="kn">from</span> <span class="nn">.db</span> <span class="kn">import</span> <span class="n">UserData</span>
 <span class="kn">from</span> <span class="nn">.middleware</span> <span class="kn">import</span> <span class="n">AuthMiddleware</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="CodeStates"><a class="viewcode-back" href="../../modules.html#modules.code.CodeStates">[docs]</a><span class="k">class</span> <span class="nc">CodeStates</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
@@ -153,9 +157,11 @@
 <span class="sd">    :return: html код страницы или None</span>
 <span class="sd">    :rtype: Union[str, None]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Получение условия для задачи </span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_content</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">ClientConnectionError</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Не удалось получить условие </span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span>
     
     <span class="n">parse</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
@@ -174,7 +180,39 @@
     <span class="k">while</span> <span class="n">next_sibling</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">next_sibling</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">next_variant</span><span class="p">:</span>
         <span class="n">html</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">next_sibling</span><span class="p">)</span>
         <span class="n">next_sibling</span> <span class="o">=</span> <span class="n">skip_br</span><span class="p">(</span><span class="n">next_sibling</span><span class="o">.</span><span class="n">next_sibling</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Условие получено&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">html</span></div>
+
+
+<div class="viewcode-block" id="format_code"><a class="viewcode-back" href="../../modules.html#modules.code.format_code">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">format_code</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Форматирует python-код в соответствии с PEP-8</span>
+
+<span class="sd">    Возвращает отформатированный код и статус ответа</span>
+<span class="sd">    Статус 200, код был отформатирован возвращает код</span>
+<span class="sd">    Статус 204, код был в соответствии с PEP-8 возвращает None</span>
+<span class="sd">    Статус 400, код был в соответствии с PEP-8 возвращает None</span>
+
+
+<span class="sd">    :param code: код программы</span>
+<span class="sd">    :type code: str</span>
+<span class="sd">    :return: отформатировнный код программы или None</span>
+<span class="sd">    :rtype: Tuple[Union[str, None], int]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">async</span> <span class="k">with</span> <span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Отправка кода на форматирование к black серверу&#39;</span><span class="p">)</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;http://127.0.0.1:9090&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">code</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Ответ от black&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span>
+        <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Не удалось подключиться к black серверу&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">404</span></div>
 
 
 <div class="viewcode-block" id="on_group_selected"><a class="viewcode-back" href="../../modules.html#modules.code.on_group_selected">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">on_group_selected</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -184,7 +222,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_id</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Group selected: &quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Выбрана группа </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">manager</span><span class="o">.</span><span class="n">switch_to</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">task</span><span class="p">)</span></div>
 
 
@@ -194,7 +232,7 @@
 <span class="sd">    Обработчик события выбора задания</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_id</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task selected: &quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Выбрана Задача </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">manager</span><span class="o">.</span><span class="n">switch_to</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">variant</span><span class="p">)</span></div>
 
 
@@ -204,7 +242,7 @@
 <span class="sd">    Обработчик события выбора варианта задания</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">manager</span><span class="o">.</span><span class="n">dialog_data</span><span class="p">[</span><span class="s2">&quot;variant&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_id</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variant selected:&quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Выбран вариант </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     
     <span class="n">bot</span><span class="p">:</span> <span class="n">Bot</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bot&#39;</span><span class="p">)</span>
     <span class="n">chat_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;event_chat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
@@ -303,6 +341,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Обработчик команды code, входит в конечный автомат CodeStates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Команда code&quot;</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">dialog_manager</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">CodeStates</span><span class="o">.</span><span class="n">group</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">StartMode</span><span class="o">.</span><span class="n">RESET_STACK</span><span class="p">,</span>
                                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span></div>
 
