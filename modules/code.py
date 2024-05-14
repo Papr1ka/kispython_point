@@ -1,32 +1,34 @@
-from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
-from aiogram.filters import Command, or_f
-from aiogram.fsm.context import FSMContext
-from bs4 import BeautifulSoup, NavigableString
-from aiogram.fsm.state import State, StatesGroup
-from .db import UserData
-from .middleware import AuthMiddleware
-from typing import Dict, Any
+from typing import Dict, Any, Union
 
+from aiohttp import ClientSession, ClientConnectionError
+from aiogram import Router, F, Bot
+from aiogram.types import Message, CallbackQuery, BufferedInputFile
+from aiogram.filters import Command, or_f
 from aiogram.filters.state import State, StatesGroup
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
+from bs4 import BeautifulSoup, NavigableString
 
 from aiogram_dialog import Window, Dialog, DialogManager, StartMode
-from aiogram_dialog.widgets.kbd import ScrollingGroup, Back
+from aiogram_dialog.widgets.kbd import ScrollingGroup, Back, Select, Column
 from aiogram_dialog.widgets.text import Const, Format
 
-from aiogram_dialog.widgets.kbd import Select, Column
-import requests
-
-from aiogram.types import BufferedInputFile
-from aiogram import Bot
-
-from aiohttp import ClientSession
+from .db import UserData
+from .middleware import AuthMiddleware
 
 
 class CodeStates(StatesGroup):
+    """
+    Хранилище данных конечного автомата выбора задачи
+    """
+    
+    #: Группа
     group = State()
+    #: Номер задания, на 1 меньше фактического (индекс)
     task = State()
+    #: Номер варианта
     variant = State()
+    #: Код решения
     code = State()
 
 
@@ -41,37 +43,51 @@ variants = [i for i in range(1, 41)]
 
 
 async def get_primary_data(*args, **kwargs):
+    """
+    Формирует данные для отображения в виждетах
+    
+    :return: Словарь с данными
+    :rtype: Dict[str, List[str, ...]]
+    """
     return {"groups": groups,
             "tasks": tasks,
             "variants": variants}
 
 
-async def get_content(link):
+async def get_content(link: str):
+    """
+    Возвращает текст страницы с заданием или выбрасывает исключение,
+    если страница не найдена
+    
+    :param link: Ссылка на страницу с заданием
+    :type link: str
+    :return: Текст страницы
+    :rtype: str
+    """
     async with ClientSession() as session:
         async with session.get(link) as page:
             assert page.status == 200
             text = await page.text('utf-8')
     return text
 
+async def get_task_condition_html(link: str, variant: int) -> Union[str, None]:
+    """Возвращает html код страницы с условием задачи варианта
 
-async def get_task_condition(manager: DialogManager):  # TODO: сделать устойчивость к плохим request'ам
-    data = manager.dialog_data
-    link = f"https://kispython.ru/docs/{data['task']}/{groups[int(data['group'])]}.html"
-    bot = manager._data.get('bot')
-    chat_id = manager._data.get('event_chat').id
-    flag = False
-    content = None
+    :param link: Ссылка на страницу с заданием
+    :type link: str
+    :param variant: Номер варианта
+    :type variant: int
+    :return: html код страницы или None
+    :rtype: Union[str, None]
+    """
     try:
         content = await get_content(link)
-    except Exception as E:
-        flag = True
-
-    if content is None or len(content) == 0 or flag:
-        return await bot.send_message(chat_id, "Ошибка при парсинге сайта")
-
+    except (AssertionError, ClientConnectionError):
+        return
+    
     parse = BeautifulSoup(content, "html.parser")
-    tag = parse.find(name="h2", id=f"вариант-{data['variant']}")
-    next_variant = f"вариант-{int(data['variant']) + 1}"
+    tag = parse.find(name="h2", id=f"вариант-{variant}")
+    next_variant = f"вариант-{variant + 1}"
     html = str(tag)
     
     def skip_br(tag):
@@ -85,14 +101,14 @@ async def get_task_condition(manager: DialogManager):  # TODO: сделать у
     while next_sibling is not None and next_sibling.attrs.get('id') != next_variant:
         html += str(next_sibling)
         next_sibling = skip_br(next_sibling.next_sibling)
-
-    file_name = f"{data['task']}_{groups[int(data['group'])]}_вариант-{data['variant']}.html"
-
-    await bot.send_document(chat_id, BufferedInputFile(html.encode('utf-8'), file_name))
+    return html
 
 
 async def on_group_selected(callback: CallbackQuery, widget: Any,
                             manager: DialogManager, item_id: str):
+    """
+    Обработчик события выбора группы
+    """
     
     manager.dialog_data["group"] = item_id
     print("Group selected: ", item_id)
@@ -101,6 +117,9 @@ async def on_group_selected(callback: CallbackQuery, widget: Any,
 
 async def on_task_selected(callback: CallbackQuery, widget: Any,
                            manager: DialogManager, item_id: str):
+    """
+    Обработчик события выбора задания
+    """
     manager.dialog_data["task"] = item_id
     print("Task selected: ", item_id)
     await manager.switch_to(CodeStates.variant)
@@ -108,14 +127,32 @@ async def on_task_selected(callback: CallbackQuery, widget: Any,
 
 async def on_variant_selected(callback: CallbackQuery, widget: Any,
                               manager: DialogManager, item_id: str):
+    """
+    Обработчик события выбора варианта задания
+    """
     manager.dialog_data["variant"] = item_id
     print("Variant selected:", item_id)
+    
+    bot: Bot = manager._data.get('bot')
+    chat_id = manager._data.get('event_chat').id
+    
+    variant = int(item_id)
     data = manager.dialog_data
-    condifion_url = (f"https://kispython.ru/docs/{data['task']}/" +
-    f"{groups[int(data['group'])]}.html#вариант-{int(data['variant'])}")
-    manager.dialog_data['condition'] = condifion_url
-    await get_task_condition(manager)
+    condition_url = (
+        f"https://kispython.ru/docs/{data['task']}/" +
+        f"{groups[int(data['group'])]}.html#вариант-{variant}"
+    )
+    
+    manager.dialog_data['condition'] = condition_url
+    file_name = f"{data['task']}_{groups[int(data['group'])]}_вариант-{variant}.html"
+    
+    html = await get_task_condition_html(condition_url, variant)
+    if html is None:
+        return await bot.send_message(chat_id, "К сожалению, условие не найдено")
+
+    await bot.send_document(chat_id, BufferedInputFile(html.encode('utf-8'), file_name))
     await manager.switch_to(CodeStates.code)
+
 
 group = Window(
     Const("Выберите группу"),
@@ -188,37 +225,11 @@ code_router = Router(name=__name__)
 # code_router.message.outer_middleware(AuthMiddleware())
 # Далее можно считать, что работа идёт только с авторизованными
 
-@code_router.message(Command("test"))
-async def send_pdf(message: Message, bot: Bot):
-    link = f"https://kispython.ru/docs/11/ИКБО-04-22.html"
-    content = requests.get(link)
-    content.encoding = "utf-8"
-
-    parse = BeautifulSoup(content.text, "html.parser")
-    tag = parse.find(name="h2", id=f"вариант-{11}")
-    next_variant = f"вариант-{12}"
-    html = str(tag)
-    
-    def skip_br(tag):
-        # Пропускает NavigableString "\n"
-        if isinstance(tag, NavigableString):
-            return tag.next_sibling
-        return tag
-    
-    next_sibling = skip_br(tag.next_sibling)
-    
-    while next_sibling is not None and next_sibling.attrs.get('id') != next_variant:
-        html += str(next_sibling)
-        next_sibling = skip_br(next_sibling.next_sibling)
-
-    with open("out.html", "w") as file:
-        file.write(html)
-    
-    await message.reply_document(BufferedInputFile(html.encode('utf-8'), 'test.html'))
-
-
 @code_router.message(or_f(Command("code"), F.text == "code"))
 async def code_handler(message: Message, db: Dict[int, UserData], state: FSMContext, dialog_manager: DialogManager):
+    """
+    Обработчик команды code, входит в конечный автомат CodeStates
+    """
     await dialog_manager.start(CodeStates.group, mode=StartMode.RESET_STACK,
                                data={"session": db.get(message.from_user.id, None)})
 

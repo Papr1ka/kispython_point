@@ -4,7 +4,10 @@ from aiohttp import ClientSession
 
 @dataclass
 class UserData:
-    authorized: bool  # Авторизован ли пользователь
-    passes: int  # Кол-во попыток решения задачи
-    session: ClientSession  # Объект сессии со всеми токенами
-    session_data: dict  # Для авторизации (передаётся в login_via_lks)
+    """
+    Объект данных, связанных с пользователем в кэше
+    """
+    authorized: bool #: Авторизован ли пользователь
+    passes: int #: Кол-во попыток решения задачи
+    session: ClientSession #: Объект сессии с токенами для авторизации
+    session_data: dict #: Данные для авторизации (передаётся в login_via_lks)

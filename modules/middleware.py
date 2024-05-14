@@ -1,10 +1,16 @@
 from typing import Callable, Dict, Any, Awaitable
+
 from aiogram import BaseMiddleware
 from aiogram.types import Message
+
 from .db import UserData
 
 
 class AuthMiddleware(BaseMiddleware):
+    """
+    При включении в маршрутизатор гарантирует,
+    что команда будет обработана только если пользователь авторизован
+    """
     async def __call__(
             self,
             handler: Callable[[Message, Dict[str, UserData], Dict[str, Any]], Awaitable[Any]],

@@ -1,17 +1,17 @@
 import asyncio
 import logging
 import os
-
-from aiogram import Bot, Dispatcher
-from modules.auth import auth_router
-from modules.code import code_router, dialog
-from modules.db import UserData
 from typing import Dict
 
 from aiogram.types import BotCommand
-from aiogram.methods.set_my_commands import SetMyCommands
 from aiogram_dialog import setup_dialogs
+from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
+
+from modules.auth import auth_router
+from modules.code import code_router, dialog
+from modules.db import UserData
+
 
 dp = Dispatcher()
 
@@ -26,9 +26,7 @@ async def on_shutdown(db: Dict[int, UserData]):
 load_dotenv("./.env")
 
 API_TOKEN = os.getenv("BOT_TOKEN")
-print("Токен", API_TOKEN)
 db = {}
-
 commands = [
     BotCommand(command="auth", description="Авторизоваться через ЛКС МИРЭА"),
     BotCommand(command="code", description="Начать решать задачи"),
@@ -46,5 +44,9 @@ async def main():
     await dp.start_polling(bot, db=db)
 
 
-if __name__ == '__main__':
+def run():
     asyncio.run(main())
+
+
+if __name__ == '__main__':
+    run()

@@ -1,13 +1,18 @@
-from bs4 import BeautifulSoup
+from enum import Enum
+from typing import Dict, Union
+
 from aiohttp import ClientSession
 from aiohttp import ClientConnectionError
-from enum import Enum
-from typing import Tuple, Dict
+from bs4 import BeautifulSoup
+
 
 AUTH_URL = "https://kispython.ru/login/lks"
 
 
-class AuthStatus(Enum):
+class AuthStatus(Enum):   
+    """
+    Статус результата авторизации
+    """
     SERVER_UNAVAILABLE = 0, "Сервер недоступен, попробуйте позже"
     INVALID_AUTH_DATA = 1, "Неверные данные для авторизации"
     TOO_MANY_ATTEMPTS = 2, "Слишком много неудачных попыток"
@@ -15,17 +20,21 @@ class AuthStatus(Enum):
     UNDEFINED_ERROR = 4, "Ошибка"
 
     def get_message(self):
+        """Возвращает строковое обозначение ошибки
+
+        :return: Строка с обозначением ошибки
+        :rtype: str
+        """
         return self.value[1]
 
 
 async def prepare_session_for_login(session: ClientSession) -> AuthStatus:
     """Подготавливает ссылки и csrf_token для будущей авторизации
 
-    Args:
-        session (ClientSession): объект сессии
-
-    Returns:
-        AuthStatus: статус ответа, если SUCCESS, всё хорошо
+    :param session: объект сессии
+    :type session: ClientSession
+    :return: Cтатус ответа
+    :rtype: AuthStatus
     """
     try:
         async with session.get(AUTH_URL, headers={"Referer": "https://kispython.ru/"}) as page:
@@ -51,14 +60,16 @@ async def prepare_session_for_login(session: ClientSession) -> AuthStatus:
 async def login_via_lks(session: ClientSession, login: str, password: str, data: Dict[str, str]) -> AuthStatus:
     """Авторизует пользователя с парой login, password, все токены записываются в session
 
-    Args:
-        session (ClientSession): объект сессии
-        login (str): логин пользователя
-        password (str): пароль пользователя
-        data (Dict[str, str]): Словарь, возвращаемый prepare_session_for_login
-
-    Returns:
-        AuthStatus: статус ответа, если SUCCESS, всё хорошо
+    :param session: объект сессии
+    :type session: ClientSession
+    :param login: логин пользователя
+    :type login: str
+    :param password: пароль пользователя
+    :type password: str
+    :param data: Словарь, возвращаемый prepare_session_for_login
+    :type data: Dict[str, str]
+    :return: Cтатус ответа
+    :rtype: AuthStatus
     """
 
     data = data.copy()
@@ -83,10 +94,15 @@ async def login_via_lks(session: ClientSession, login: str, password: str, data:
         return AuthStatus.SERVER_UNAVAILABLE
 
 
-async def parse_tasks(session: ClientSession):
-    """
-    Возвращает количество существующих задач или None, сессия может без авторизации
-    """
+async def parse_tasks(session: ClientSession) -> Union[int, None]:
+    """Возвращает количество существующих задач, доступных к решению или None,
+    объект сессии может быть любым
+
+    :param session: Объект сесси
+    :type session: ClientSession
+    :return: Количество ошибок или None
+    :rtype: Union[int, None]
+    """    
     try:
         async with session.get("https://kispython.ru/group/0") as page:
             content = await page.read()

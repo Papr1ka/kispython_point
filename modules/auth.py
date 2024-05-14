@@ -1,18 +1,17 @@
-import logging
+from typing import Dict
 
 from aiogram import Router, Bot, F
 from aiogram.types import Message, ReplyKeyboardRemove, KeyboardButton
 from aiogram.filters import Command, or_f
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from aiohttp import ClientSession
 
 from .login import AuthStatus, prepare_session_for_login, login_via_lks
 from .db import UserData
 
-from typing import Dict
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 auth_router = Router(name=__name__)
 
@@ -23,6 +22,9 @@ class AuthData(StatesGroup):
 
 @auth_router.message(Command("auth"))
 async def start_handler(message: Message, state: FSMContext):
+    """
+    Обработчик команды auth, входит в автомат AuthData
+    """    
     await state.set_state(AuthData.login_password)
     builder = ReplyKeyboardBuilder()
     builder.add(KeyboardButton(text="cancel"))
@@ -33,6 +35,9 @@ async def start_handler(message: Message, state: FSMContext):
 
 @auth_router.message(or_f(Command("cancel"), F.text == "cancel"))
 async def cancel_handler(message: Message, state: FSMContext):
+    """
+    Обработчик команды calcel, выходит из автомата
+    """
     curr_state = await state.get_state()
     if curr_state is None:
         return
@@ -41,7 +46,18 @@ async def cancel_handler(message: Message, state: FSMContext):
     await message.answer("Отменено.", reply_markup=ReplyKeyboardRemove())
 
 
-def hide_value(value: str, n: int = 2):
+def hide_value(value: str, n: int = 2) -> str:
+    """
+    Маскирует пароль, показывая только первые и последние 1 или n символов
+    в зависимости от длины пароля
+    
+    :param value: пароль
+    :type value: str
+    :param n: количество символов для сокрытия, по умолчанию 2
+    :type n: int, опционально
+    :return: замаскированная строка
+    :rtype: str
+    """
     if len(value) < 2 * n:
         return value[1] + "*" * (len(value) - 1)
     return value[:n] + "*" * (len(value) - 2 * n) + value[-n:]
@@ -49,6 +65,20 @@ def hide_value(value: str, n: int = 2):
 
 @auth_router.message(AuthData.login_password, F.text)
 async def login_handler(message: Message, bot: Bot, state: FSMContext, db: Dict[int, UserData]):
+    """
+    Обработчик перехода из состояния ввода логина и пароля
+
+    :param message: сообщение
+    :type message: Message
+    :param bot: бот
+    :type bot: Bot
+    :param state: состояние автомата
+    :type state: FSMContext
+    :param db: внутренний кэш с данными пользователей
+    :type db: Dict[int, UserData]
+    :return: None
+    :rtype: None
+    """
     pair = message.text.split(":")
     if len(pair) != 2:
         return await message.answer("Введите в формате <login>:<password>")
@@ -87,6 +117,15 @@ async def login_handler(message: Message, bot: Bot, state: FSMContext, db: Dict[
 
 @auth_router.message(Command("quit"))
 async def quit_handler(message: Message, state: FSMContext, db: Dict[int, UserData]):
+    """Обработчик команды quit, удаляет авторизацию пользователя
+
+    :param message: сообщение
+    :type message: Message
+    :param state: состояние автомата
+    :type state: FSMContext
+    :param db: внутренний кэш с данными пользователей
+    :type db: Dict[int, UserData]
+    """
     user_id = message.from_user.id
 
     if db.get(user_id, None) is None or db[user_id].authorized is False:
@@ -101,6 +140,15 @@ async def quit_handler(message: Message, state: FSMContext, db: Dict[int, UserDa
 @auth_router.message(AuthData.login_password)
 async def login_handler(message: Message, bot: Bot, state: FSMContext, db: Dict[int, UserData]):
     """
-    Обработка нетекстового ввода
+    Обработчик некорректного ввода данных в состоянии ввода логина и пароля
+    
+    :param message: сообщение
+    :type message: Message
+    :param bot: бот
+    :type bot: Bot
+    :param state: состояние автомата
+    :type state: FSMContext
+    :param db: внутренний кэш с данными пользователей
+    :type db: Dict[int, UserData]
     """
     await message.answer("Введите корректные данные <login>:<password>")
