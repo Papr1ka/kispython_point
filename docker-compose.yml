@@ -1,0 +1,14 @@
+version: '3'
+services:
+  bot:
+    depends_on:
+      - black
+    build: .
+    environment:
+      - BOT_TOKEN=6812079909:AAHt9E3jAqWKIlhjggi8RE3NV2E07nFaQ5U
+
+  black:
+    build:
+      dockerfile: black.Dockerfile
+    ports:
+      - 9090:9090

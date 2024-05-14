@@ -1,4 +1,5 @@
 from typing import Dict
+import logging
 
 from aiogram import Router, Bot, F
 from aiogram.types import Message, ReplyKeyboardRemove, KeyboardButton
@@ -13,6 +14,7 @@ from .login import AuthStatus, prepare_session_for_login, login_via_lks
 from .db import UserData
 
 
+logger = logging.getLogger(__name__)
 auth_router = Router(name=__name__)
 
 
@@ -25,6 +27,7 @@ async def start_handler(message: Message, state: FSMContext):
     """
     Обработчик команды auth, входит в автомат AuthData
     """    
+    logger.info(f"Команда auth")
     await state.set_state(AuthData.login_password)
     builder = ReplyKeyboardBuilder()
     builder.add(KeyboardButton(text="cancel"))
@@ -38,6 +41,7 @@ async def cancel_handler(message: Message, state: FSMContext):
     """
     Обработчик команды calcel, выходит из автомата
     """
+    logger.info(f"Команда cancel")
     curr_state = await state.get_state()
     if curr_state is None:
         return
@@ -126,6 +130,7 @@ async def quit_handler(message: Message, state: FSMContext, db: Dict[int, UserDa
     :param db: внутренний кэш с данными пользователей
     :type db: Dict[int, UserData]
     """
+    logger.info(f"Команда quit")
     user_id = message.from_user.id
 
     if db.get(user_id, None) is None or db[user_id].authorized is False:
@@ -151,4 +156,5 @@ async def login_handler(message: Message, bot: Bot, state: FSMContext, db: Dict[
     :param db: внутренний кэш с данными пользователей
     :type db: Dict[int, UserData]
     """
+    logger.info(f"Команда login, некорректный ввод")
     await message.answer("Введите корректные данные <login>:<password>")

@@ -1,4 +1,5 @@
-from typing import Dict, Any, Union
+from typing import Dict, Any, Union, Tuple
+from logging import getLogger
 
 from aiohttp import ClientSession, ClientConnectionError
 from aiogram import Router, F, Bot
@@ -15,6 +16,9 @@ from aiogram_dialog.widgets.text import Const, Format
 
 from .db import UserData
 from .middleware import AuthMiddleware
+
+
+logger = getLogger(__name__)
 
 
 class CodeStates(StatesGroup):
@@ -80,9 +84,11 @@ async def get_task_condition_html(link: str, variant: int) -> Union[str, None]:
     :return: html код страницы или None
     :rtype: Union[str, None]
     """
+    logger.info(f"Получение условия для задачи {link} {variant}...")
     try:
         content = await get_content(link)
     except (AssertionError, ClientConnectionError):
+        logger.error(f"Не удалось получить условие {link} {variant}")
         return
     
     parse = BeautifulSoup(content, "html.parser")
@@ -101,7 +107,39 @@ async def get_task_condition_html(link: str, variant: int) -> Union[str, None]:
     while next_sibling is not None and next_sibling.attrs.get('id') != next_variant:
         html += str(next_sibling)
         next_sibling = skip_br(next_sibling.next_sibling)
+    logger.info(f"Условие получено")
     return html
+
+
+async def format_code(code: str) -> Tuple[Union[str, None], int]:
+    """
+    Форматирует python-код в соответствии с PEP-8
+
+    Возвращает отформатированный код и статус ответа
+    Статус 200, код был отформатирован возвращает код
+    Статус 204, код был в соответствии с PEP-8 возвращает None
+    Статус 400, код был в соответствии с PEP-8 возвращает None
+
+
+    :param code: код программы
+    :type code: str
+    :return: отформатировнный код программы или None
+    :rtype: Tuple[Union[str, None], int]
+    """
+    
+    async with ClientSession() as session:
+        try:
+            logger.debug('Отправка кода на форматирование к black серверу')
+            async with session.post("http://127.0.0.1:9090", data=code.encode('utf-8')) as response:
+                logger.debug('Ответ от black', response.status)
+                if response.status == 200:
+                    text = await response.text('utf-8')
+                    return text, response.status
+                else:
+                    return None, response.status
+        except ClientConnectionError as E:
+            logger.error('Не удалось подключиться к black серверу')
+            return None, 404
 
 
 async def on_group_selected(callback: CallbackQuery, widget: Any,
@@ -111,7 +149,7 @@ async def on_group_selected(callback: CallbackQuery, widget: Any,
     """
     
     manager.dialog_data["group"] = item_id
-    print("Group selected: ", item_id)
+    logger.info(f"Выбрана группа {item_id}")
     await manager.switch_to(CodeStates.task)
 
 
@@ -121,7 +159,7 @@ async def on_task_selected(callback: CallbackQuery, widget: Any,
     Обработчик события выбора задания
     """
     manager.dialog_data["task"] = item_id
-    print("Task selected: ", item_id)
+    logger.info(f"Выбрана Задача {item_id}")
     await manager.switch_to(CodeStates.variant)
 
 
@@ -131,7 +169,7 @@ async def on_variant_selected(callback: CallbackQuery, widget: Any,
     Обработчик события выбора варианта задания
     """
     manager.dialog_data["variant"] = item_id
-    print("Variant selected:", item_id)
+    logger.info(f"Выбран вариант {item_id}")
     
     bot: Bot = manager._data.get('bot')
     chat_id = manager._data.get('event_chat').id
@@ -230,6 +268,7 @@ async def code_handler(message: Message, db: Dict[int, UserData], state: FSMCont
     """
     Обработчик команды code, входит в конечный автомат CodeStates
     """
+    logger.info(f"Команда code")
     await dialog_manager.start(CodeStates.group, mode=StartMode.RESET_STACK,
                                data={"session": db.get(message.from_user.id, None)})
 

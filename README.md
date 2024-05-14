@@ -22,11 +22,9 @@
 
 ### Запуск бота
 
-1. `docker build -t kispython_point .`
+1. Установка переменной окружения `BOT_TOKEN` в docker-compose.yml
 
-2. Задайте переменной окружения `BOT_TOKEN` значение токена бота или передайте напрямую в следующую команду
-
-3. `docker run --env BOT_TOKEN=${BOT_TOKEN} kispython_point`
+2. `docker compose up`
 
 ### Построение документации
 
