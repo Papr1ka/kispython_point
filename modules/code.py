@@ -242,7 +242,7 @@ async def solve_handler(
     """
     bot = message.bot
     user = message.from_user.id
-    code = message.text
+    code = message.text + "\n"
 
     if not (10 <= len(code) <= 10 ** 4):
         await message.reply("Код должен содержать от 10 до 10⁴ символов!")
@@ -265,6 +265,7 @@ async def solve_handler(
     code, status = await format_code(code)
     if status == 200:
         await bot.send_message(user, "Ваш код был отформатирован в соответствии с требованиями pep-8")
+        await bot.send_message(user, f"Отформатированный код:```python\n{code}```", parse_mode="markdown")
     elif status == 204:
         await bot.send_message(user, "Ваш код соответствует формату pep-8, изменений не произведено")
     elif status == 400:
