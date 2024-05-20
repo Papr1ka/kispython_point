@@ -1,14 +1,8 @@
-<<<<<<< Updated upstream
-from typing import Dict, Any, Union
-=======
 import asyncio
 import re
 from typing import Dict, Any, Union, Tuple
 from logging import getLogger
->>>>>>> Stashed changes
 
-import aiogram.types
-from threading import Thread
 from aiohttp import ClientSession, ClientConnectionError
 from aiogram import Router, F, Bot
 from aiogram.types import Message, CallbackQuery, BufferedInputFile
@@ -27,8 +21,6 @@ from aiogram.types import ContentType, Message
 from .db import UserData
 from .middleware import AuthMiddleware
 
-<<<<<<< Updated upstream
-=======
 template = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +35,6 @@ template = """<!DOCTYPE html>
 
 logger = getLogger(__name__)
 
->>>>>>> Stashed changes
 
 class CodeStates(StatesGroup):
     """
@@ -72,7 +63,7 @@ variants = [i for i in range(1, 41)]
 async def get_primary_data(*args, **kwargs):
     """
     Формирует данные для отображения в виждетах
-    
+
     :return: Словарь с данными
     :rtype: Dict[str, List[str, ...]]
     """
@@ -85,7 +76,7 @@ async def get_content(link: str):
     """
     Возвращает текст страницы с заданием или выбрасывает исключение,
     если страница не найдена
-    
+
     :param link: Ссылка на страницу с заданием
     :type link: str
     :return: Текст страницы
@@ -108,9 +99,11 @@ async def get_task_condition_html(link: str, variant: int) -> Union[str, None]:
     :return: html код страницы или None
     :rtype: Union[str, None]
     """
+    logger.info(f"Получение условия для задачи {link} {variant}...")
     try:
         content = await get_content(link)
     except (AssertionError, ClientConnectionError):
+        logger.error(f"Не удалось получить условие {link} {variant}")
         return
 
     parse = BeautifulSoup(content, "html.parser")
@@ -129,9 +122,6 @@ async def get_task_condition_html(link: str, variant: int) -> Union[str, None]:
     while next_sibling is not None and next_sibling.attrs.get('id') != next_variant:
         html += str(next_sibling)
         next_sibling = skip_br(next_sibling.next_sibling)
-<<<<<<< Updated upstream
-    return html
-=======
     logger.info(f"Условие получено")
     return template.format(html)
 
@@ -141,7 +131,7 @@ async def format_code(code: str) -> Tuple[Union[str, None], int]:
     Форматирует python-код в соответствии с PEP-8
 
     Возвращает отформатированный код и статус ответа:
-    
+
     * Статус 200, код был отформатирован возвращает код
     * Статус 204, код был в соответствии с PEP-8 возвращает исходный код
     * Статус 400, синтаксическая ошибка возвращает None
@@ -166,7 +156,6 @@ async def format_code(code: str) -> Tuple[Union[str, None], int]:
         except ClientConnectionError as E:
             logger.error('Не удалось подключиться к black серверу')
             return None, 404
->>>>>>> Stashed changes
 
 
 async def on_group_selected(callback: CallbackQuery, widget: Any,
@@ -176,9 +165,6 @@ async def on_group_selected(callback: CallbackQuery, widget: Any,
     """
 
     manager.dialog_data["group"] = item_id
-<<<<<<< Updated upstream
-    print("Group selected: ", item_id)
-=======
     logger.info(f"Выбрана группа {item_id}")
 
     await manager.switch_to(CodeStates.variant)
@@ -192,7 +178,6 @@ async def on_variant_selected(callback: CallbackQuery, widget: Any,
     manager.dialog_data["variant"] = int(item_id)
     logger.info(f"Выбран вариант {item_id}")
 
->>>>>>> Stashed changes
     await manager.switch_to(CodeStates.task)
 
 
@@ -202,22 +187,7 @@ async def on_task_selected(callback: CallbackQuery, widget: Any,
     Обработчик события выбора задания
     """
     manager.dialog_data["task"] = item_id
-<<<<<<< Updated upstream
-    print("Task selected: ", item_id)
-    await manager.switch_to(CodeStates.variant)
-
-
-async def on_variant_selected(callback: CallbackQuery, widget: Any,
-                              manager: DialogManager, item_id: str):
-    """
-    Обработчик события выбора варианта задания
-    """
-    manager.dialog_data["variant"] = item_id
-    print("Variant selected:", item_id)
-    
-=======
     logger.info(f"Выбрана Задача {item_id}")
->>>>>>> Stashed changes
     bot: Bot = manager._data.get('bot')
     chat_id = manager._data.get('event_chat').id
 
@@ -399,11 +369,8 @@ async def code_handler(message: Message, db: Dict[int, UserData], state: FSMCont
     """
     Обработчик команды code, входит в конечный автомат CodeStates
     """
-<<<<<<< Updated upstream
-=======
     logger.info(f"Команда code")
 
->>>>>>> Stashed changes
     await dialog_manager.start(CodeStates.group, mode=StartMode.RESET_STACK,
                                data={"session": db.get(message.from_user.id, None)})
 
