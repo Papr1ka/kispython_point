@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Dict, Union
+from logging import getLogger
 
 from aiohttp import ClientSession
 from aiohttp import ClientConnectionError
@@ -7,6 +8,7 @@ from bs4 import BeautifulSoup
 
 
 AUTH_URL = "https://kispython.ru/login/lks"
+logger = getLogger(__name__)
 
 
 class AuthStatus(Enum):   
@@ -54,6 +56,7 @@ async def prepare_session_for_login(session: ClientSession) -> AuthStatus:
                 "next": next_url
             }
     except ClientConnectionError as E:
+        logger.error(f"Нет доступа к kispython, сервер недоступен {E}")
         return AuthStatus.SERVER_UNAVAILABLE, None
 
 
@@ -75,8 +78,10 @@ async def login_via_lks(session: ClientSession, login: str, password: str, data:
     data = data.copy()
     data.update(login=login, password=password)
     log_url = data.pop("log_url")
+    logger.info("Авторизация через ЛКС...")
     try:
         async with session.post(log_url, data=data, headers={"Referer": log_url}) as page:
+            logger.info(f"Авторизация через ЛКС, статус {page.status}")
             if page.status != 200:
                 return AuthStatus.SERVER_UNAVAILABLE
 
@@ -91,6 +96,7 @@ async def login_via_lks(session: ClientSession, login: str, password: str, data:
                 return AuthStatus.UNDEFINED_ERROR
             return AuthStatus.SUCCESS
     except ClientConnectionError as E:
+        logger.error(f"Авторизация через ЛКС не сработала, сервер недоступен {E}")
         return AuthStatus.SERVER_UNAVAILABLE
 
 
@@ -104,6 +110,7 @@ async def parse_tasks(session: ClientSession) -> Union[int, None]:
     :rtype: Union[int, None]
     """    
     try:
+        logger.info(f"Получение количества задач...")
         async with session.get("https://kispython.ru/group/0") as page:
             content = await page.read()
             parse = BeautifulSoup(content, "html.parser")
@@ -112,6 +119,8 @@ async def parse_tasks(session: ClientSession) -> Union[int, None]:
                 return None
             tr = login_form.find(name="thead").find("tr")
             numbers = tr.find_all(name="a")
+            logger.info(f"Всего {len(numbers)} задач")
             return len(numbers)
     except ClientConnectionError as E:
+        logger.error(f"Не удалось получить кол-во задач")
         return None

@@ -1,9 +1,13 @@
 from typing import Callable, Dict, Any, Awaitable
+from logging import getLogger
 
 from aiogram import BaseMiddleware
 from aiogram.types import Message
 
 from .db import UserData
+
+
+logger = getLogger(__name__)
 
 
 class AuthMiddleware(BaseMiddleware):
@@ -22,5 +26,6 @@ class AuthMiddleware(BaseMiddleware):
         user_id = message.from_user.id
         user_data = db.get(user_id)
         if user_data is None or user_data.authorized is False:
+            logger.info("Вызов команды без авторизации")            
             return await message.answer("Для этого авторизуйтесь через /auth")
         return await handler(message, data)
