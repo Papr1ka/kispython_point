@@ -72,7 +72,6 @@
              
   <h1>Source code for modules.auth</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">Router</span><span class="p">,</span> <span class="n">Bot</span><span class="p">,</span> <span class="n">F</span>
 <span class="kn">from</span> <span class="nn">aiogram.types</span> <span class="kn">import</span> <span class="n">Message</span><span class="p">,</span> <span class="n">ReplyKeyboardRemove</span><span class="p">,</span> <span class="n">KeyboardButton</span>
@@ -87,7 +86,6 @@
 <span class="kn">from</span> <span class="nn">.db</span> <span class="kn">import</span> <span class="n">UserData</span>
 
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">auth_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -100,21 +98,19 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Обработчик команды auth, входит в автомат AuthData</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Команда auth&quot;</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">state</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">AuthData</span><span class="o">.</span><span class="n">login_password</span><span class="p">)</span>
     <span class="n">builder</span> <span class="o">=</span> <span class="n">ReplyKeyboardBuilder</span><span class="p">()</span>
     <span class="n">builder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">KeyboardButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;cancel&quot;</span><span class="p">))</span>
     <span class="n">message</span> <span class="o">=</span> <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Привет, </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">!</span>
-<span class="s2">Введи пару &lt;login&gt;:&lt;password&gt; от ЛКС МИРЭА&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">(</span><span class="n">resize_keyboard</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+<span class="s2">Введите пару &lt;login&gt;:&lt;password&gt; от ЛКС МИРЭА&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">as_markup</span><span class="p">(</span><span class="n">resize_keyboard</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="cancel_handler"><a class="viewcode-back" href="../../modules.html#modules.auth.cancel_handler">[docs]</a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">or_f</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;cancel&quot;</span><span class="p">),</span> <span class="n">F</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;cancel&quot;</span><span class="p">))</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">cancel_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">FSMContext</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Обработчик команды calcel, выходит из автомата</span>
+<span class="sd">    Обработчик команды cancel, выходит из автомата</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Команда cancel&quot;</span><span class="p">)</span>
     <span class="n">curr_state</span> <span class="o">=</span> <span class="k">await</span> <span class="n">state</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">curr_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
@@ -203,7 +199,6 @@
 <span class="sd">    :param db: внутренний кэш с данными пользователей</span>
 <span class="sd">    :type db: Dict[int, UserData]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Команда quit&quot;</span><span class="p">)</span>
     <span class="n">user_id</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span>
 
     <span class="k">if</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">db</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">authorized</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -229,7 +224,6 @@
 <span class="sd">    :param db: внутренний кэш с данными пользователей</span>
 <span class="sd">    :type db: Dict[int, UserData]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Команда login, некорректный ввод&quot;</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">answer</span><span class="p">(</span><span class="s2">&quot;Введите корректные данные &lt;login&gt;:&lt;password&gt;&quot;</span><span class="p">)</span></div>
 </pre></div>
 

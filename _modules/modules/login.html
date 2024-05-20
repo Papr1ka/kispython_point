@@ -73,7 +73,6 @@
   <h1>Source code for modules.login</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
 
 <span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ClientSession</span>
 <span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ClientConnectionError</span>
@@ -81,7 +80,6 @@
 
 
 <span class="n">AUTH_URL</span> <span class="o">=</span> <span class="s2">&quot;https://kispython.ru/login/lks&quot;</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="AuthStatus"><a class="viewcode-back" href="../../modules.html#modules.login.AuthStatus">[docs]</a><span class="k">class</span> <span class="nc">AuthStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>   
@@ -129,7 +127,6 @@
                 <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="n">next_url</span>
             <span class="p">}</span>
     <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Нет доступа к kispython, сервер недоступен </span><span class="si">{</span><span class="n">E</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span><span class="p">,</span> <span class="kc">None</span></div>
 
 
@@ -151,10 +148,8 @@
     <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">login</span><span class="o">=</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
     <span class="n">log_url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;log_url&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Авторизация через ЛКС...&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">log_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="n">log_url</span><span class="p">})</span> <span class="k">as</span> <span class="n">page</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Авторизация через ЛКС, статус </span><span class="si">{</span><span class="n">page</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">page</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span>
 
@@ -169,7 +164,6 @@
                 <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">UNDEFINED_ERROR</span>
             <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SUCCESS</span>
     <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Авторизация через ЛКС не сработала, сервер недоступен </span><span class="si">{</span><span class="n">E</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">AuthStatus</span><span class="o">.</span><span class="n">SERVER_UNAVAILABLE</span></div>
 
 
@@ -183,7 +177,6 @@
 <span class="sd">    :rtype: Union[int, None]</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Получение количества задач...&quot;</span><span class="p">)</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://kispython.ru/group/0&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">page</span><span class="p">:</span>
             <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">parse</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
@@ -192,10 +185,8 @@
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">login_form</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;thead&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;tr&quot;</span><span class="p">)</span>
             <span class="n">numbers</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Всего </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="si">}</span><span class="s2"> задач&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">ClientConnectionError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Не удалось получить кол-во задач&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 

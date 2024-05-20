@@ -59,24 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#modules.auth.start_handler"><code class="docutils literal notranslate"><span class="pre">start_handler()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-modules.code">modules.code module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.CodeStates"><code class="docutils literal notranslate"><span class="pre">CodeStates</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.code"><code class="docutils literal notranslate"><span class="pre">CodeStates.code</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.group"><code class="docutils literal notranslate"><span class="pre">CodeStates.group</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.task"><code class="docutils literal notranslate"><span class="pre">CodeStates.task</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modules.code.CodeStates.variant"><code class="docutils literal notranslate"><span class="pre">CodeStates.variant</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.code_handler"><code class="docutils literal notranslate"><span class="pre">code_handler()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.format_code"><code class="docutils literal notranslate"><span class="pre">format_code()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.get_content"><code class="docutils literal notranslate"><span class="pre">get_content()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.get_primary_data"><code class="docutils literal notranslate"><span class="pre">get_primary_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.get_task_condition_html"><code class="docutils literal notranslate"><span class="pre">get_task_condition_html()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.on_group_selected"><code class="docutils literal notranslate"><span class="pre">on_group_selected()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.on_task_selected"><code class="docutils literal notranslate"><span class="pre">on_task_selected()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modules.code.on_variant_selected"><code class="docutils literal notranslate"><span class="pre">on_variant_selected()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#modules-code-module">modules.code module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-modules.db">modules.db module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modules.db.UserData"><code class="docutils literal notranslate"><span class="pre">UserData</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modules.db.UserData.authorized"><code class="docutils literal notranslate"><span class="pre">UserData.authorized</span></code></a></li>
@@ -155,7 +138,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="modules.auth.cancel_handler">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.auth.</span></span><span class="sig-name descname"><span class="pre">cancel_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/auth.html#cancel_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.auth.cancel_handler" title="Permalink to this definition"></a></dt>
-<dd><p>Обработчик команды calcel, выходит из автомата</p>
+<dd><p>Обработчик команды cancel, выходит из автомата</p>
 </dd></dl>
 
 <dl class="py function">
@@ -217,139 +200,8 @@
 </dd></dl>
 
 </section>
-<section id="module-modules.code">
-<span id="modules-code-module"></span><h2>modules.code module<a class="headerlink" href="#module-modules.code" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="modules.code.CodeStates">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">CodeStates</span></span><a class="reference internal" href="_modules/modules/code.html#CodeStates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.CodeStates" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StatesGroup</span></code></p>
-<p>Хранилище данных конечного автомата выбора задачи</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modules.code.CodeStates.code">
-<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:code'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.code" title="Permalink to this definition"></a></dt>
-<dd><p>Код решения</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modules.code.CodeStates.group">
-<span class="sig-name descname"><span class="pre">group</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:group'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.group" title="Permalink to this definition"></a></dt>
-<dd><p>Группа</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modules.code.CodeStates.task">
-<span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:task'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.task" title="Permalink to this definition"></a></dt>
-<dd><p>Номер задания, на 1 меньше фактического (индекс)</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modules.code.CodeStates.variant">
-<span class="sig-name descname"><span class="pre">variant</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;State</span> <span class="pre">'CodeStates:variant'&gt;</span></em><a class="headerlink" href="#modules.code.CodeStates.variant" title="Permalink to this definition"></a></dt>
-<dd><p>Номер варианта</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.code_handler">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">code_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#modules.db.UserData" title="modules.db.UserData"><span class="pre">UserData</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FSMContext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dialog_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#code_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.code_handler" title="Permalink to this definition"></a></dt>
-<dd><p>Обработчик команды code, входит в конечный автомат CodeStates</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.format_code">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">format_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/modules/code.html#format_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.format_code" title="Permalink to this definition"></a></dt>
-<dd><p>Форматирует python-код в соответствии с PEP-8</p>
-<p>Возвращает отформатированный код и статус ответа:</p>
-<ul class="simple">
-<li><p>Статус 200, код был отформатирован возвращает код</p></li>
-<li><p>Статус 204, код был в соответствии с PEP-8 возвращает None</p></li>
-<li><p>Статус 400, синтаксическая ошибка возвращает None</p></li>
-<li><p>Статус 500, иная ошибка (сервера) возвращает None</p></li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>code</strong> (<em>str</em>) -- код программы</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>отформатировнный код программы или None</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[Union[str, None], int]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.get_content">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">get_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#get_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.get_content" title="Permalink to this definition"></a></dt>
-<dd><p>Возвращает текст страницы с заданием или выбрасывает исключение,
-если страница не найдена</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>link</strong> (<em>str</em>) -- Ссылка на страницу с заданием</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Текст страницы</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.get_primary_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">get_primary_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#get_primary_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.get_primary_data" title="Permalink to this definition"></a></dt>
-<dd><p>Формирует данные для отображения в виждетах</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Словарь с данными</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict[str, List[str, ...]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.get_task_condition_html">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">get_task_condition_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/modules/code.html#get_task_condition_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.get_task_condition_html" title="Permalink to this definition"></a></dt>
-<dd><p>Возвращает html код страницы с условием задачи варианта</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>link</strong> (<em>str</em>) -- Ссылка на страницу с заданием</p></li>
-<li><p><strong>variant</strong> (<em>int</em>) -- Номер варианта</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>html код страницы или None</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Union[str, None]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.on_group_selected">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">on_group_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CallbackQuery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#on_group_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.on_group_selected" title="Permalink to this definition"></a></dt>
-<dd><p>Обработчик события выбора группы</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.on_task_selected">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">on_task_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CallbackQuery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#on_task_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.on_task_selected" title="Permalink to this definition"></a></dt>
-<dd><p>Обработчик события выбора задания</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.code.on_variant_selected">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modules.code.</span></span><span class="sig-name descname"><span class="pre">on_variant_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CallbackQuery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DialogManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modules/code.html#on_variant_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modules.code.on_variant_selected" title="Permalink to this definition"></a></dt>
-<dd><p>Обработчик события выбора варианта задания</p>
-</dd></dl>
-
+<section id="modules-code-module">
+<h2>modules.code module<a class="headerlink" href="#modules-code-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-modules.db">
 <span id="modules-db-module"></span><h2>modules.db module<a class="headerlink" href="#module-modules.db" title="Permalink to this heading"></a></h2>
