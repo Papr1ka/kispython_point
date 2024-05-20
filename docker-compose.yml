@@ -5,10 +5,11 @@ services:
       - black
     build: .
     environment:
-      - BOT_TOKEN=${BOT_TOKEN}
+      - BOT_TOKEN=6812079909:AAFDgSuFUeUkNU4mnIne2fD7pE_Nqi1Z79k
 
   black:
+    container_name: black
     build:
       dockerfile: black.Dockerfile
     ports:
-      - 9090:9090
+      - "9090:9090"

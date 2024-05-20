@@ -146,7 +146,7 @@ async def format_code(code: str) -> Tuple[Union[str, None], int]:
     async with ClientSession() as session:
         try:
             logger.debug('Отправка кода на форматирование к black серверу')
-            async with session.post("http://127.0.0.1:9090", data=code.encode('utf-8')) as response:
+            async with session.post("http://black:9090", data=code.encode('utf-8')) as response:
                 logger.debug('Ответ от black', response.status)
                 if response.status == 200:
                     text = await response.text('utf-8')
@@ -154,7 +154,7 @@ async def format_code(code: str) -> Tuple[Union[str, None], int]:
                 else:
                     return code, response.status
         except ClientConnectionError as E:
-            logger.error('Не удалось подключиться к black серверу')
+            logger.error(f'Не удалось подключиться к black серверу, {E}')
             return None, 404
 
 
