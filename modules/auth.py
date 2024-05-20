@@ -30,13 +30,13 @@ async def start_handler(message: Message, state: FSMContext):
     builder.add(KeyboardButton(text="cancel"))
     message = await message.answer(
         f"""Привет, {message.from_user.full_name}!
-Введи пару <login>:<password> от ЛКС МИРЭА""", reply_markup=builder.as_markup(resize_keyboard=True))
+Введите пару <login>:<password> от ЛКС МИРЭА""", reply_markup=builder.as_markup(resize_keyboard=True))
 
 
 @auth_router.message(or_f(Command("cancel"), F.text == "cancel"))
 async def cancel_handler(message: Message, state: FSMContext):
     """
-    Обработчик команды calcel, выходит из автомата
+    Обработчик команды cancel, выходит из автомата
     """
     curr_state = await state.get_state()
     if curr_state is None:
